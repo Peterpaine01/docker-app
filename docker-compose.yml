@@ -24,7 +24,7 @@ services:
       - php-nginx
       - mysql-php
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/html/public
     depends_on:
       - mysql
 
