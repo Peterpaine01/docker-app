@@ -1,0 +1,67 @@
+services:
+  nginx:
+    container_name: container-nginx
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "81:80"
+    networks:
+      - php-nginx
+    volumes:
+      - ./app:/var/www/html/public
+    depends_on:
+      - php
+
+  php:
+    container_name: container-php
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    ports:
+      - "9000:9000"
+    networks:
+      - php-nginx
+      - mysql-php
+    volumes:
+      - ./app:/var/www/html/public
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: container-mysql
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=coda
+      - MYSQL_USER=coda
+      - MYSQL_PASSWORD=coda
+    ports:
+      - "3306:3306"
+    command: --innodb-force-recovery=4 # Force MySQL à démarrer en mode de récupération niveau 4
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - mysql-php
+
+  phpmyadmin:
+    container_name: container-phpmyadmin
+    image: phpmyadmin:fpm-alpine
+    environment:
+      PMA_HOST: mysql
+      PMA_PASSWORD: password
+      PMA_USER: user
+    ports:
+      - "8080:8080"
+    networks:
+      - mysql-php
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
+
+networks:
+  php-nginx:
+  mysql-php:

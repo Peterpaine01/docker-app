@@ -1,0 +1,18 @@
+# On part d'une image PHP 8.3.11, basée sur Alpine (une distribution Linux légère)
+FROM php:8.3.11-fpm-alpine
+
+# WORKDIR /var/www/html/public
+
+# On installe les extensions pdo et pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN mkdir -p /var/www/html/public
+
+# On copie notre fichier index.php dans le dossier de code du conteneur
+# COPY src/index.php /var/www/html/public/index.php
+
+# On expose le port 9000 pour PHP-FPM
+EXPOSE 9000
+
+# On lance PHP-FPM
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
