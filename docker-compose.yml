@@ -9,7 +9,7 @@ services:
     networks:
       - php-nginx
     volumes:
-      - ./app:/var/www/html/public
+      - ./app:/var/www/html
     depends_on:
       - php
 
@@ -24,7 +24,7 @@ services:
       - php-nginx
       - mysql-php
     volumes:
-      - ./app:/var/www/html/public
+      - ./app:/var/www/html
     depends_on:
       - mysql
 
@@ -38,7 +38,6 @@ services:
       - MYSQL_PASSWORD=coda
     ports:
       - "3306:3306"
-    command: --innodb-force-recovery=4 # Force MySQL à démarrer en mode de récupération niveau 4
     volumes:
       - mysql-data:/var/lib/mysql
       # - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf
@@ -50,8 +49,8 @@ services:
     image: phpmyadmin:fpm-alpine
     environment:
       PMA_HOST: mysql
-      PMA_PASSWORD: password
-      PMA_USER: user
+      PMA_PASSWORD: coda
+      PMA_USER: coda
     ports:
       - "8080:8080"
     networks:

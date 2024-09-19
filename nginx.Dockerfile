@@ -2,7 +2,7 @@ FROM nginx:stable-alpine
 
 # WORKDIR /var/www/html/
 
-RUN mkdir -p /var/www/html/public
+RUN mkdir -p /var/www/html
 # RUN adduser -g coda -s /bin/sh -D coda
 
 # RUN sed -i "s/user  nginx/user  coda/g" /etc/nginx/nginx.conf
